@@ -5,6 +5,7 @@ import {MatInputModule} from '@angular/material/input';
 import { HttpService } from '../../http.service';
 import { IEmployee } from '../../interfaces/employee';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-employee-form',
@@ -18,6 +19,7 @@ export class EmployeeFormComponent {
   formBuilder= inject(FormBuilder);
   router = inject(Router);
   route = inject(ActivatedRoute)
+  toaster = inject(ToastrService);
 
   employeeForm=this.formBuilder.group({
     firstName:['',[Validators.required]],
@@ -58,11 +60,13 @@ export class EmployeeFormComponent {
       this.httpService.updateEmployee(this.employeeId,employee).subscribe(() => {
         this.router.navigateByUrl("/employee-list");
         console.log("success");
+        this.toaster.success("Record updated successfuly")
       });
     } else {
       this.httpService.createEmployee(employee).subscribe(() => {
         this.router.navigateByUrl("/employee-list");
         console.log("success");
+        this.toaster.success("Record added successfuly")
       });
     }
 
