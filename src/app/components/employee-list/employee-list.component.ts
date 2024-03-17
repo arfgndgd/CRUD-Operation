@@ -16,9 +16,13 @@ export class EmployeeListComponent {
   router = inject(Router);
   employeeList:IEmployee[] = [];
   httpService = inject(HttpService);
-  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'phone','age','salary', 'action'];
+  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'phone','age','salary', 'food', 'action'];
 
   ngOnInit(){
+    this.getEmployeeFromServer();
+  }
+
+  getEmployeeFromServer() {
     this.httpService.getAllEmployee().subscribe(result => {
       this.employeeList = result;
       console.log(this.employeeList);
@@ -28,5 +32,14 @@ export class EmployeeListComponent {
   edit(id: number) {
     console.log(id);
     this.router.navigateByUrl("/employee/" + id);
+  }
+
+  delete(id: number){
+    this.httpService.deleteEmployee(id).subscribe(() => {
+      console.log("deleted");
+      this.employeeList = this.employeeList.filter(x => x.id!=id);
+    });
+
+    this.getEmployeeFromServer();
   }
 }
