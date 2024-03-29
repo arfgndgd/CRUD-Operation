@@ -30,4 +30,12 @@ export class HttpService {
   deleteEmployee(employeeId: number) {
     return this.http.delete(this.apiUrl + '/api/Employee/' + employeeId);
   }
+
+  login(email: string, password: string) {
+    this.http.post<{token: string}>(this.apiUrl + 'api/Auth/login', 
+    {
+      "email": email,
+      "password": password
+    })
+  }
 }
